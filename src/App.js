@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { FaAngleRight, FaAngleDown } from "react-icons/fa";
+import folders from "./Data";
+
+function Folder({ folder }) {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="flex flex-col">
+      <div 
+        className=" flex items-center font-bold cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {folder.folders?.length > 0 && !isOpen && <FaAngleRight />}
+        {isOpen && <FaAngleDown />}
+        {folder.name}
+      </div>
+      { isOpen &&
+        <div className="ml-5">
+        {folder.folders?.map((folder, index) => {
+          return <Folder key={index} folder={folder}/>
+        })}
+      </div>}
+    </div>
+  )
+}
 
 function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="bg-slate-900 min-h-screen text-white p-4">
+      {
+        folders.map(function getFolders(folder, index) {
+          return  <Folder key={index} folder={folder}/>
+        })
+      }
     </div>
   );
 }
